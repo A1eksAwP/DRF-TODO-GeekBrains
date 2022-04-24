@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='TODO',
+            name='ToDo',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('description', models.TextField(blank=True, verbose_name='Описание задачи')),
@@ -35,7 +35,7 @@ class Migration(migrations.Migration):
                 ('updated', models.DateTimeField(auto_now=True, verbose_name='Обновлен')),
                 ('is_active', models.BooleanField(default=True, verbose_name='Активный')),
                 ('deadline', models.DateField(blank=True, verbose_name='Дэдлайн')),
-                ('project', models.ForeignKey(blank=True, on_delete=django.db.models.deletion.CASCADE, related_name='TODO', to='todo.project', verbose_name='Проект')),
+                ('project', models.ForeignKey(blank=True, on_delete=django.db.models.deletion.CASCADE, related_name='ToDo', to='todo.project', verbose_name='Проект')),
             ],
         ),
         migrations.CreateModel(
