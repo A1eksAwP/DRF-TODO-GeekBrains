@@ -1,6 +1,7 @@
+
+
 const UserItem = ({user}) => {
     return(
-        <tbody>
         <tr>
             <td>{user.id}</td>
             <td>{user.username}</td>
@@ -9,7 +10,6 @@ const UserItem = ({user}) => {
             <td>{user.email}</td>
             <td>{user.phone_number}</td>
         </tr>
-        </tbody>
     )
 }
 
