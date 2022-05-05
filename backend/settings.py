@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     'django_filters',
     'corsheaders',
     'rest_framework.authtoken',
+    'drf_yasg',
 
     'users',
     'todo',
@@ -70,7 +71,7 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer',
         ],
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
-
+    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.AcceptHeaderVersioning',
     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated'],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
@@ -78,6 +79,8 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ],
 }
+
+SWAGGER_SETTINGS = { 'SECURITY_DEFINITIONS': { 'Basic': { 'type': 'basic' }, 'Token': { 'type': 'apiKey', 'name': 'Authorization', 'in': 'header' } } }
 
 if DEBUG:
     REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'].append('rest_framework.renderers.BrowsableAPIRenderer')
