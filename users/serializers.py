@@ -5,3 +5,8 @@ class UserModelSerializer(ModelSerializer):
     class Meta:
         model = MyUserModel
         fields = ['age', 'username', 'first_name', 'last_name', 'email', 'phone', 'city']
+
+class UserModelSerializerV2(ModelSerializer):
+    class Meta:
+        model = MyUserModel
+        fields = ['age', 'username', 'first_name', 'last_name', 'email', 'phone', 'city', 'is_superuser', 'is_staff']
