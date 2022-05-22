@@ -23,10 +23,15 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework.authtoken',
     'drf_yasg',
+    'graphene_django',
 
     'users',
     'todo',
 ]
+
+GRAPHENE = {
+    'SCHEMA': 'todo.schema.schema'
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -72,7 +77,7 @@ REST_FRAMEWORK = {
         ],
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.AcceptHeaderVersioning',
-    'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated'],
+    'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.AllowAny'],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
