@@ -6,7 +6,8 @@ from todo.views import ProjectModelViewSet, ProjectUserModelViewSet, ToDoModelVi
 from rest_framework.authtoken import views
 from drf_yasg.views import get_schema_view
 from drf_yasg.openapi import Info, Contact, License
-
+from graphene_django.views import GraphQLView
+from django.views.decorators.csrf import csrf_exempt   
 
 schema_view = get_schema_view(
     Info(
@@ -34,4 +35,5 @@ urlpatterns = [
     path('api-auth-token/', views.obtain_auth_token),
     path('swagger/', schema_view.with_ui()),
     re_path(r'^swagger(?P<format>\.json|\.yaml)', schema_view.without_ui()),
+    path('graphql/', csrf_exempt(GraphQLView.as_view(graphiql=True)))
 ]
