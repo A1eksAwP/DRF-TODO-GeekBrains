@@ -20,14 +20,14 @@ class ProjectUser(models.Model): #Пользователь проекта
     project = models.ForeignKey(Project, verbose_name='Проект', related_name='project', on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'Пользователь {self.user} занимается задачей: {self.project}'
+        return self.user.username
 
 
 class ToDo(models.Model): #Задача, стоящая перед пользователями
     project = models.ForeignKey(Project, verbose_name='Проект', related_name='ToDo', null=True, blank=True, on_delete=models.SET_NULL)
     description = models.TextField(verbose_name='Описание задачи', blank=True)
     created_by = models.ForeignKey(MyUserModel, verbose_name='Автор', related_name='created_by', null=True, blank=True, on_delete=models.SET_NULL)
-    users = models.ManyToManyField(ProjectUser, verbose_name='Пользователи', blank=True)
+    users = models.ForeignKey(ProjectUser, verbose_name='Пользователи', related_name ='creatooor', null=True, blank=True, on_delete=models.SET_NULL)
     created = models.DateTimeField(verbose_name='Создан', auto_now_add=True)
     updated = models.DateTimeField(verbose_name='Обновлен', auto_now=True)
     is_active = models.BooleanField(verbose_name='Активный', default=True)
