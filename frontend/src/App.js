@@ -5,11 +5,13 @@ import UserList from './components/Users.js'
 import ProjectList from './components/Projects.js'
 import ToDoList from './components/ToDo.js'
 import LoginForm from './components/LoginForm.js'
+import ProjectsForm from './components/ProjectsForm.js'
+import ToDoForm from './components/ToDoForm.js'
 import {BrowserRouter, Route, Routes, Link, useLocation} from 'react-router-dom'
 
 
 const NotFound = () => {
-  var location = useLocation()
+  let location = useLocation()
 
   return (
       <div>
@@ -24,7 +26,7 @@ class App extends React.Component {
         this.state = {
             'users': [],
             'projects': [],
-            'todos': [],
+            'todos': '',
             'token': ''
         }
     }
@@ -122,6 +124,64 @@ class App extends React.Component {
 
     }
 
+    createProject(name, repository_url) {
+        let headers = this.getHeaders()
+
+        axios
+            .post('http://127.0.0.1:8000/api/projects/', {'name': name, 'repository_url': repository_url}, {headers})
+            .then(response => {
+                this.getData()
+            })
+            .catch(error => {
+                console.log(error)
+            })
+
+    }
+
+    createToDo(description, project, users, deadline) {
+        let headers = this.getHeaders()
+
+        axios
+            .post('http://127.0.0.1:8000/api/todo/', {'description': description, 'project': project, 'users': users, 'deadline': deadline}, {headers})
+            .then(response => {
+                this.getData()
+            })
+            .catch(error => {
+                console.log(error)
+            })
+
+    }
+
+    deleteProject(id) {
+        let headers = this.getHeaders()
+
+        axios
+            .delete(`http://127.0.0.1:8000/api/projects/${id}`, {headers})
+            .then(response => {
+                this.setState({
+                    'projects': this.state.projects.filter((project) => project.id !== id)
+                })
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+
+    deleteToDo(id) {
+        let headers = this.getHeaders()
+
+        axios
+            .delete(`http://127.0.0.1:8000/api/todo/${id}`, {headers})
+            .then(response => {
+                this.setState({
+                    'todos': this.state.projects.filter((todo) => todo.id !== id)
+                })
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+
     render() {
         return (
             <div>
@@ -129,7 +189,9 @@ class App extends React.Component {
                     <nav>
                         <li><Link to='/users'>Пользователи</Link></li>
                         <li><Link to='/projects'>Проекты</Link></li>
+                        <li><Link to='/projects/create'>Создать проект</Link></li>
                         <li><Link to='/todos'>Задачи</Link></li>
+                        <li><Link to='/todos/create'>Поставить новую задачу</Link></li>
                         <li>
                         { this.isAuth() ? <button onClick={()=>this.logOut()}>Logout</button> : <Link to='/login'>Login</Link> }
                         </li>
@@ -138,8 +200,10 @@ class App extends React.Component {
                     <Routes>
                         <Route exact path='/' element = {<UserList users={this.state.users} />} />
                         <Route exact path='/users' element = {<UserList users={this.state.users} />} />
-                        <Route exact path='/projects' element = {<ProjectList projects={this.state.projects} />} />
-                        <Route exact path='/todos' element = {<ToDoList todos={this.state.todos} />} />
+                        <Route exact path='/projects' element = {<ProjectList projects={this.state.projects} deleteProject={(id) => this.deleteProject(id)}/>} />
+                        <Route exact path='/projects/create' element = {<ProjectsForm projects={this.state.projects} createProject={(name, repository_url) => this.createProject(name, repository_url)} />} />
+                        <Route exact path='/todos' element = {<ToDoList todos={this.state.todos} deleteToDo={(id) => this.deleteToDo(id)}/>} />
+                        <Route exact path='/todos/create' element = {<ToDoForm todos={this.state.todos} projects={this.state.projects} users={this.state.users} createToDo={(description, project, users, deadline) => this.createToDo(description, project, users, deadline)} />} />
                         <Route exact path='/login' element = {<LoginForm obtainAuthToken={(login, password) => this.obtainAuthToken(login, password)}/>} />
                         <Route path='*' element = {<NotFound />} />
                     </Routes>
